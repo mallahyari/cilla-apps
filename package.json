@@ -1,0 +1,9 @@
+{
+  "name": "cilla-apps",
+  "private": true,
+  "description": "Showcase applications built with Cilla Mini, an 18.2M-parameter Persian TTS model.",
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev": "echo \"Run a specific app, e.g. pnpm --filter <app-name> dev\""
+  }
+}

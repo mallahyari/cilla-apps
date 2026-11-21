@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>دستیار صوتی آفلاین سیلا</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="bg-mesh" aria-hidden="true">
+      <span class="blob b1"></span>
+      <span class="blob b2"></span>
+      <span class="blob b3"></span>
+    </div>
+
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-badge">
+            <span class="dot" id="connDot"></span>
+          </div>
+          <div>
+            <h1>دستیار صوتی سیلا</h1>
+            <p class="subtitle" id="stackInfo">کاملاً آفلاین · در حال اتصال به سرور محلی…</p>
+          </div>
+        </div>
+
+        <div class="controls-top">
+          <select id="micSelect" aria-label="انتخاب میکروفون">
+            <option value="">میکروفون پیش‌فرض</option>
+          </select>
+          <select id="voiceSelect" aria-label="انتخاب صدا">
+            <option value="parisa">پریسا (Parisa)</option>
+            <option value="voice1">صدای زن (Voice 1)</option>
+            <option value="voice2">صدای مرد (Voice 2)</option>
+          </select>
+          <button id="clearBtn" class="ghost-btn" title="پاک کردن گفتگو">پاک کردن</button>
+        </div>
+      </header>
+
+      <section class="model-banner" id="modelBanner">
+        <div class="model-banner-row">
+          <span id="modelStatus">برای شروع، مدل صوتی سیلا مینی (۱۰۷ مگابایت) را در مرورگر بارگذاری کنید.</span>
+          <button id="loadModelBtn" class="primary-btn">بارگذاری مدل صوتی</button>
+        </div>
+        <progress id="modelProgress" value="0" max="1" hidden></progress>
+      </section>
+
+      <main class="stage">
+        <section class="chat-card">
+          <div class="chat" id="chat" aria-live="polite">
+            <div class="empty-state" id="emptyState">
+              <p class="empty-title">سلام! هر سوالی داری به فارسی بپرس</p>
+              <div class="chips" id="promptChips">
+                <button type="button" class="chip" data-prompt="یک حقیقت علمی جالب بگو">یک حقیقت علمی جالب بگو</button>
+                <button type="button" class="chip" data-prompt="پایتخت ژاپن کجاست و چه ویژگی خاصی دارد؟">پایتخت ژاپن کجاست؟</button>
+                <button type="button" class="chip" data-prompt="یک ایده سریع و خوشمزه برای شام پیشنهاد بده">ایده سریع برای شام</button>
+              </div>
+            </div>
+          </div>
+
+          <footer class="composer">
+            <form id="textForm">
+              <input
+                id="textInput"
+                type="text"
+                placeholder="یا پیام فارسی بنویسید و Enter بزنید…"
+                autocomplete="off"
+              />
+              <button type="submit" class="send-btn" aria-label="ارسال">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </button>
+            </form>
+          </footer>
+        </section>
+
+        <section class="orb-section">
+          <div class="orb-stage">
+            <canvas id="orbCanvas" class="orb-canvas" width="220" height="220" aria-hidden="true"></canvas>
+            <button id="orbBtn" class="orb-hit idle" aria-label="صحبت کنید">
+              <span class="orb-icon" id="orbIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="2" width="6" height="12" rx="3" />
+                  <path d="M5 10a7 7 0 0 0 14 0" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
+                  <line x1="9" y1="21" x2="15" y2="21" />
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <div class="state-pill idle" id="statePill">
+            <span class="state-dot"></span>
+            <span id="orbLabel">بزن و صحبت کن</span>
+          </div>
+
+          <div class="orb-meta">
+            <label class="toggle">
+              <input type="checkbox" id="autoStopToggle" checked />
+              <span>توقف خودکار پس از سکوت</span>
+            </label>
+            <span class="sep">•</span>
+            <span class="hint">کلید <kbd>Space</kbd> برای شروع یا توقف</span>
+          </div>
+
+          <div class="metrics" id="metrics"></div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

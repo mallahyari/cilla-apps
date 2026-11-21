@@ -1,0 +1,19 @@
+{
+  "name": "@cilla-apps/cilla-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./persian": "./src/persian.js"
+  },
+  "description": "Shared browser utilities for Cilla Mini web apps (phonon-tts WASM loader, Persian normalization, streaming sentence queue).",
+  "dependencies": {
+    "phonon-tts": "^0.7.1"
+  }
+}

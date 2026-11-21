@@ -1,0 +1,20 @@
+[project]
+name = "cilla-voice-assistant-server"
+version = "0.1.0"
+description = "Local offline Persian ASR (EmbeddingGemma2 CTC) + streaming LLM backend for Cilla Mini Voice Assistant"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "httpx>=0.28.0",
+    "python-multipart>=0.0.12",
+    "torch>=2.6.0",
+    "transformers>=5.0.0",
+    "sentencepiece>=0.2.0",
+    "soundfile>=0.12.1",
+    "safetensors>=0.4.5",
+    "huggingface-hub>=0.29.0",
+]
+
+[tool.uv]
+package = false

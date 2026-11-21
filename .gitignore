@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Model weights & generated audio (never commit large binaries)
+*.safetensors
+*.onnx
+*.bin
+*.pt
+*.pth
+models/
+out/
+*.wav
+*.mp3
+*.ogg
+*.m4a
+
+# Build outputs
+dist/
+build/
+.next/
+.vite/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# OS & editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
