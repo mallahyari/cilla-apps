@@ -444,6 +444,10 @@ kbd {
   gap: 10px;
 }
 
+.empty-state[hidden] {
+  display: none;
+}
+
 .empty-state {
   margin: auto;
   text-align: center;

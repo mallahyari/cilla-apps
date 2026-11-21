@@ -6,6 +6,8 @@ A 100% offline, low-latency Persian voice assistant built with:
 - **LLM (Brain):** **Ollama** (`aya-expanse:8b`, 5.1 GB, Cohere multilingual with first-class Persian) by default — or **`llama.cpp` (`llama-server`)** via one env var
 - **TTS (Voice):** **[Cilla Mini](https://huggingface.co/mehdi-hf/cilla-mini)** (18.2M, 107 MB) streaming inside the browser via `phonon-tts` WebAssembly (~20 ms to first audio)
 
+![Offline Persian Voice Assistant — Cilla Mini](./docs/screenshot.png)
+
 ## ASR Options
 
 > **Note:** The default `mehdi-hf/embeddinggemma2-asr-ctc-farsi-v1` repo is currently **private**. If you are cloning this project publicly, use either of the open alternatives below:
