@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>عقل و دل — مناظره‌ی صوتی با سیلا</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <!-- Minimal top bar -->
+      <header class="topbar">
+        <div class="brand">
+          <span class="dot" id="connDot"></span>
+          <h1>عقل و دل</h1>
+        </div>
+        <div class="controls-top">
+          <select id="micSelect" aria-label="انتخاب میکروفون">
+            <option value="">میکروفون پیش‌فرض</option>
+          </select>
+          <button id="clearBtn" class="ghost-btn">دوباره</button>
+        </div>
+      </header>
+
+      <!-- Compact model loader banner (hides once ready) -->
+      <section class="model-banner" id="modelBanner">
+        <div class="model-banner-row">
+          <span id="modelStatus">مدل صوتی سیلا مینی (۱۰۷ مگابایت)</span>
+          <button id="loadModelBtn" class="primary-btn">بارگذاری صدا</button>
+        </div>
+        <progress id="modelProgress" value="0" max="1" hidden></progress>
+      </section>
+
+      <!-- Full-bleed split-screen animated character theater -->
+      <main class="theater" id="theater" data-active="none">
+        <!-- Floating user question pill -->
+        <div class="user-pill" id="userPill" hidden></div>
+
+        <!-- TOP HALF: دل (Heart — warm golden-peach / coral) -->
+        <section class="pane del-pane" id="paneDel">
+          <span class="pane-tag">دل</span>
+
+          <div class="face-stage">
+            <svg class="hero-face" viewBox="0 0 260 190" aria-label="دل">
+              <!-- Floating heart crown & joy rays -->
+              <g class="del-crown">
+                <path d="M130 34 C130 24, 114 16, 108 26 C103 35, 116 45, 130 55 C144 45, 157 35, 152 26 C146 16, 130 24, 130 34 Z" fill="#fff7ed" stroke="#ffffff" stroke-width="2" />
+                <g class="joy-rays">
+                  <line x1="76" y1="36" x2="62" y2="28" stroke="#ffffff" stroke-width="5" stroke-linecap="round" />
+                  <line x1="68" y1="54" x2="54" y2="52" stroke="#ffffff" stroke-width="5" stroke-linecap="round" />
+                  <line x1="184" y1="36" x2="198" y2="28" stroke="#ffffff" stroke-width="5" stroke-linecap="round" />
+                  <line x1="192" y1="54" x2="206" y2="52" stroke="#ffffff" stroke-width="5" stroke-linecap="round" />
+                </g>
+              </g>
+
+              <!-- Eyebrows -->
+              <g class="del-brows">
+                <path d="M74 74 Q88 64 102 72" fill="none" stroke="#4a1d1f" stroke-width="4.5" stroke-linecap="round" />
+                <path d="M158 72 Q172 64 186 74" fill="none" stroke="#4a1d1f" stroke-width="4.5" stroke-linecap="round" />
+              </g>
+
+              <!-- Starry eyes (idle / speaking) -->
+              <g class="del-eyes-happy">
+                <ellipse cx="90" cy="106" rx="22" ry="25" fill="#3b1518" />
+                <ellipse cx="170" cy="106" rx="22" ry="25" fill="#3b1518" />
+                <!-- 4-point star sparkles -->
+                <path d="M90 92 L94 102 L104 106 L94 110 L90 120 L86 110 L76 106 L86 102 Z" fill="#ffffff" />
+                <path d="M170 92 L174 102 L184 106 L174 110 L170 120 L166 110 L156 106 L166 102 Z" fill="#ffffff" />
+                <circle cx="101" cy="117" r="3.2" fill="#ffffff" opacity="0.9" />
+                <circle cx="181" cy="117" r="3.2" fill="#ffffff" opacity="0.9" />
+              </g>
+
+              <!-- Surprised eyes looking down (when عقل speaks) -->
+              <g class="del-eyes-surprised">
+                <ellipse cx="90" cy="106" rx="21" ry="24" fill="#ffffff" stroke="#3b1518" stroke-width="4" />
+                <ellipse cx="170" cy="106" rx="21" ry="24" fill="#ffffff" stroke="#3b1518" stroke-width="4" />
+                <circle cx="90" cy="115" r="9.5" fill="#3b1518" />
+                <circle cx="170" cy="115" r="9.5" fill="#3b1518" />
+                <circle cx="86" cy="111" r="3" fill="#ffffff" />
+                <circle cx="166" cy="111" r="3" fill="#ffffff" />
+              </g>
+
+              <!-- Rosy blush cheeks -->
+              <ellipse cx="56" cy="130" rx="16" ry="8" fill="#fb7185" opacity="0.45" />
+              <ellipse cx="204" cy="130" rx="16" ry="8" fill="#fb7185" opacity="0.45" />
+
+              <!-- Mouths: idle smile vs speaking lip-sync vs surprised "o" -->
+              <path class="del-mouth-idle" d="M114 134 Q130 146 146 134" fill="none" stroke="#3b1518" stroke-width="4.5" stroke-linecap="round" />
+              <ellipse id="mouthDel" class="del-mouth-talk" cx="130" cy="138" rx="15" ry="6" fill="#7f1d1d" stroke="#3b1518" stroke-width="3.5" />
+              <ellipse class="del-mouth-surprised" cx="130" cy="138" rx="7.5" ry="9" fill="#f43f5e" stroke="#3b1518" stroke-width="3.5" />
+            </svg>
+          </div>
+
+          <!-- Speech bubble directly on دل -->
+          <div class="speech-bubble del-bubble" id="bubbleDel" hidden>
+            <span class="bubble-tail"></span>
+            <p id="textDel"></p>
+          </div>
+        </section>
+
+        <!-- Curved glossy wave separator -->
+        <div class="wave-divider" aria-hidden="true"></div>
+
+        <!-- BOTTOM HALF: عقل (Head — crisp vibrant sky / royal blue) -->
+        <section class="pane aghl-pane" id="paneAghl">
+          <span class="pane-tag">عقل</span>
+
+          <div class="face-stage">
+            <svg class="hero-face" viewBox="0 0 260 190" aria-label="عقل">
+              <!-- Logic spark rays when speaking -->
+              <g class="logic-rays">
+                <line x1="42" y1="88" x2="22" y2="80" stroke="#fde047" stroke-width="5.5" stroke-linecap="round" />
+                <line x1="38" y1="112" x2="20" y2="116" stroke="#fde047" stroke-width="5.5" stroke-linecap="round" />
+                <line x1="218" y1="88" x2="238" y2="80" stroke="#fde047" stroke-width="5.5" stroke-linecap="round" />
+                <line x1="222" y1="112" x2="240" y2="116" stroke="#fde047" stroke-width="5.5" stroke-linecap="round" />
+              </g>
+
+              <!-- Cute anime skeptical mark (when دل speaks) -->
+              <g class="aghl-annoyed-mark">
+                <path d="M214 54 L220 60 L214 66 M228 54 L222 60 L228 66" fill="none" stroke="#fde047" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+              </g>
+
+              <!-- Stylish round-rect glasses -->
+              <g class="aghl-glasses">
+                <rect x="60" y="78" width="58" height="44" rx="14" fill="rgba(255,255,255,0.16)" stroke="#0f172a" stroke-width="4.5" />
+                <rect x="142" y="78" width="58" height="44" rx="14" fill="rgba(255,255,255,0.16)" stroke="#0f172a" stroke-width="4.5" />
+                <line x1="118" y1="98" x2="142" y2="98" stroke="#0f172a" stroke-width="4.5" />
+              </g>
+
+              <!-- Expressive eyes (idle / speaking) -->
+              <g class="aghl-eyes-normal">
+                <ellipse cx="89" cy="100" rx="15" ry="15" fill="#ffffff" stroke="#0f172a" stroke-width="3.5" />
+                <ellipse cx="171" cy="100" rx="15" ry="15" fill="#ffffff" stroke="#0f172a" stroke-width="3.5" />
+                <circle cx="91" cy="100" r="7.5" fill="#0f172a" />
+                <circle cx="173" cy="100" r="7.5" fill="#0f172a" />
+                <circle cx="88" cy="96" r="2.8" fill="#ffffff" />
+                <circle cx="170" cy="96" r="2.8" fill="#ffffff" />
+                <!-- Sharp confident brows -->
+                <path d="M64 68 L112 75" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
+                <path d="M196 68 L148 75" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
+              </g>
+
+              <!-- Skeptical half-lidded eyes looking up (when دل speaks) -->
+              <g class="aghl-eyes-skeptic">
+                <ellipse cx="89" cy="103" rx="15" ry="12" fill="#ffffff" stroke="#0f172a" stroke-width="3.5" />
+                <ellipse cx="171" cy="103" rx="15" ry="12" fill="#ffffff" stroke="#0f172a" stroke-width="3.5" />
+                <circle cx="89" cy="98" r="6.5" fill="#0f172a" />
+                <circle cx="171" cy="98" r="6.5" fill="#0f172a" />
+                <!-- Flat skeptical eyelids/brows -->
+                <path d="M64 88 L114 92" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
+                <path d="M196 86 L146 92" fill="none" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
+              </g>
+
+              <!-- Cheek glow -->
+              <ellipse cx="58" cy="134" rx="14" ry="7" fill="#93c5fd" opacity="0.45" />
+              <ellipse cx="202" cy="134" rx="14" ry="7" fill="#93c5fd" opacity="0.45" />
+
+              <!-- Mouths: idle smirk vs lip-synced talk vs skeptical frown -->
+              <path class="aghl-mouth-idle" d="M114 142 Q130 148 148 138" fill="none" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round" />
+              <ellipse id="mouthAghl" class="aghl-mouth-talk" cx="130" cy="142" rx="14" ry="5" fill="#0f172a" stroke="#0f172a" stroke-width="3" />
+              <path class="aghl-mouth-skeptic" d="M114 146 Q130 138 146 146" fill="none" stroke="#0f172a" stroke-width="4.5" stroke-linecap="round" />
+            </svg>
+          </div>
+
+          <!-- Speech bubble directly on عقل -->
+          <div class="speech-bubble aghl-bubble" id="bubbleAghl" hidden>
+            <span class="bubble-tail"></span>
+            <p id="textAghl"></p>
+          </div>
+        </section>
+
+        <!-- Starter chips overlay when idle & no debate yet -->
+        <div class="starter-chips" id="promptChips">
+          <button type="button" class="chip" data-prompt="کارم رو عوض کنم یا همین‌جا بمونم؟">کارم رو عوض کنم؟</button>
+          <button type="button" class="chip" data-prompt="امشب پیتزا بخورم یا رژیمم رو نگه دارم؟">پیتزا یا رژیم؟</button>
+          <button type="button" class="chip" data-prompt="با پس‌اندازم برم سفر یا سرمایه‌گذاری کنم؟">سفر یا پس‌انداز؟</button>
+        </div>
+      </main>
+
+      <!-- Bottom voice + text dock -->
+      <footer class="dock">
+        <button id="micBtn" class="mic-btn idle" aria-label="صحبت کنید">
+          <span class="mic-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="2" width="6" height="12" rx="3" />
+              <path d="M5 10a7 7 0 0 0 14 0" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+              <line x1="9" y1="21" x2="15" y2="21" />
+            </svg>
+          </span>
+          <span id="micLabel">بپرس</span>
+        </button>
+
+        <form id="textForm" class="text-form">
+          <input
+            id="textInput"
+            type="text"
+            placeholder="دوراهی خودت رو بنویس یا Space بزن و بپرس…"
+            autocomplete="off"
+          />
+          <button type="submit" class="send-btn" aria-label="ارسال">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          </button>
+        </form>
+      </footer>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -54,6 +54,7 @@ export class CillaBrowserTTS {
     this.analyser = null;
     this.freqData = null;
     this.activeSources = new Set();
+    this.startTimers = new Set();
     this.nextPlayTime = 0;
     this.queue = [];
     this.processing = false;
@@ -174,6 +175,8 @@ export class CillaBrowserTTS {
       }
       this.activeStream = null;
     }
+    for (const t of this.startTimers) clearTimeout(t);
+    this.startTimers.clear();
     for (const src of this.activeSources) {
       try {
         src.stop();
@@ -188,7 +191,7 @@ export class CillaBrowserTTS {
   }
 
   /** Enqueue a Persian sentence for streaming synthesis & gapless playback. */
-  enqueue(text, { voice = this.defaultVoice, temperature = 0.7, seed = 42, onFirstAudio } = {}) {
+  enqueue(text, { voice = this.defaultVoice, temperature = 0.7, seed = 42, onFirstAudio, onStart } = {}) {
     if (!this.model || !this.tokenCounter) {
       throw new Error("Cilla Mini model is not loaded yet.");
     }
@@ -201,6 +204,7 @@ export class CillaBrowserTTS {
         temperature,
         seed: seed + i,
         onFirstAudio: i === 0 ? onFirstAudio : undefined,
+        onStart: i === 0 ? onStart : undefined,
         enqueuedAt: performance.now(),
       });
     }
@@ -266,12 +270,21 @@ export class CillaBrowserTTS {
       if (this.nextPlayTime < now + 0.02) {
         this.nextPlayTime = now + 0.04;
       }
-      src.start(this.nextPlayTime);
+      const startAt = this.nextPlayTime;
+      src.start(startAt);
       this.nextPlayTime += buf.duration;
       this._setSpeaking(true);
       if (!firstAudioFired) {
         firstAudioFired = true;
         item.onFirstAudio?.(Math.round(performance.now() - item.enqueuedAt));
+        if (item.onStart) {
+          const delayMs = Math.max(0, (startAt - now) * 1000);
+          const tid = setTimeout(() => {
+            this.startTimers.delete(tid);
+            if (gen === this.generationId) item.onStart?.();
+          }, delayMs);
+          this.startTimers.add(tid);
+        }
       }
     };
 

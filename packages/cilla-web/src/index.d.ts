@@ -16,6 +16,7 @@ export interface CillaEnqueueOptions {
   temperature?: number;
   seed?: number;
   onFirstAudio?: (ms: number) => void;
+  onStart?: () => void;
 }
 
 export function isModelCached(modelBaseUrl?: string): Promise<boolean>;

@@ -24,6 +24,7 @@ Every app in this repository builds on top of a **shared Cilla / Phonon TTS core
 | App | Runtime | Status | Description |
 | --- | --- | --- | --- |
 | [`voice-assistant`](./apps/voice-assistant) | Browser WASM (`phonon-tts`) + Local Python (`uv`) + Ollama / `llama.cpp` | Ready | 100% offline Persian voice assistant with live audio-reactive orb, local Persian ASR (Whisper / Nemotron / FarsiCTC), and barge-in. |
+| [`aghl-o-del`](./apps/aghl-o-del) | Browser WASM (`phonon-tts`) + Local Python (`uv`) + Ollama / `llama.cpp` | Ready | **«عقل و دل» (Head vs. Heart)** — animated two-character Persian voice debate (`parisa` vs. `voice2`) with reactive faces, speech bubbles, and live lip-sync. |
 
 ### Planned / Ideas
 - In-browser `.srt` Persian video dubber

@@ -8,6 +8,22 @@ importers:
 
   .: {}
 
+  apps/aghl-o-del/web:
+    dependencies:
+      '@cilla-apps/cilla-web':
+        specifier: workspace:*
+        version: link:../../../packages/cilla-web
+      '@fontsource/vazirmatn':
+        specifier: ^5.2.8
+        version: 5.3.0
+    devDependencies:
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vite:
+        specifier: ^6.1.0
+        version: 6.4.6
+
   apps/voice-assistant/web:
     dependencies:
       '@cilla-apps/cilla-web':
