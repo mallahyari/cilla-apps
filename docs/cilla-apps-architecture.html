@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cilla Apps — System Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #f5f5f5;
+      --color-ink:     #2d3142;
+      --color-muted:   #4f5d75;
+      --color-accent:  #eb6c36;
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 32px;
+    }
+
+    .frame { max-width: 960px; width: 100%; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 24px;
+    }
+
+    svg { width: 100%; height: auto; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Architecture · Cilla Apps Monorepo</p>
+    <h1>Shared Cilla Mini &amp; Phonon TTS Architecture</h1>
+
+    <svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cilla-apps-architecture-title cilla-apps-architecture-desc">
+      <title id="cilla-apps-architecture-title">Shared Cilla Mini and Phonon TTS Architecture</title>
+      <desc id="cilla-apps-architecture-desc">Three-tier monorepo architecture showing local Cilla Mini Phonon model weights feeding shared browser WebAssembly and Python core packages that power the offline Persian voice assistant and planned web, desktop, and CLI apps.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/>
+        </marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/>
+        </marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#2e5aa8"/>
+        </marker>
+      </defs>
+
+      <!-- Clean paper ground -->
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+
+      <!-- ==================== ZONES (painted first) ==================== -->
+      <!-- Zone 1: Local Model Weights -->
+      <rect x="40" y="40" width="880" height="104" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <rect x="56" y="44" width="156" height="12" rx="4" fill="#f5f5f5"/>
+      <text x="132" y="52" fill="rgba(45,49,66,0.55)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">LOCAL MODEL WEIGHTS</text>
+
+      <!-- Zone 2: Shared Core Packages -->
+      <rect x="40" y="200" width="880" height="132" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <rect x="56" y="204" width="156" height="12" rx="4" fill="#f5f5f5"/>
+      <text x="132" y="212" fill="rgba(45,49,66,0.55)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">SHARED CORE PACKAGES</text>
+
+      <!-- Zone 3: Applications -->
+      <rect x="40" y="384" width="880" height="124" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <rect x="56" y="388" width="156" height="12" rx="4" fill="#f5f5f5"/>
+      <text x="132" y="396" fill="rgba(45,49,66,0.55)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">APPLICATIONS (APPS/*)</text>
+
+      <!-- ==================== CONNECTORS (painted before nodes) ==================== -->
+      <!-- W -> CW (primary focal path, orthogonal r=8) -->
+      <path d="M 400,128 V 164 Q 400,172 392,172 H 292 Q 284,172 284,180 V 232"
+            fill="none" stroke="#eb6c36" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      <!-- Label above horizontal segment y=172 with 8px gap (mask y=152..164) -->
+      <rect x="284" y="152" width="108" height="12" rx="4" fill="#f5f5f5"/>
+      <text x="336" y="160" fill="#7a8399" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">SERVED + CACHED</text>
+
+      <!-- W -> CP (orthogonal r=8, distinct exit port x=560) -->
+      <path d="M 560,128 V 164 Q 560,172 568,172 H 716 Q 724,172 724,180 V 232"
+            fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- Label above horizontal segment y=172 with 8px gap (mask y=152..164) -->
+      <rect x="588" y="152" width="108" height="12" rx="4" fill="#f5f5f5"/>
+      <text x="640" y="160" fill="#7a8399" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">LOADED LOCALLY</text>
+
+      <!-- CW -> A1 (straight vertical, primary focal path) -->
+      <line x1="196" y1="316" x2="196" y2="416" stroke="#eb6c36" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+
+      <!-- CW -> A2 (orthogonal r=8, planned dashed, distinct exit port x=372) -->
+      <path d="M 372,316 V 348 Q 372,356 380,356 H 464 Q 472,356 472,364 V 416"
+            fill="none" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+      <!-- CP -> A3 (straight vertical, planned dashed) -->
+      <line x1="756" y1="316" x2="756" y2="416" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+      <!-- ==================== NODES ==================== -->
+
+      <!-- Node W: Cilla Mini Phonon Weights (Store/State treatment) -->
+      <rect x="240" y="72" width="480" height="56" rx="6" fill="#f5f5f5"/>
+      <rect x="240" y="72" width="480" height="56" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+      <rect x="248" y="80" width="44" height="12" rx="4" fill="transparent" stroke="rgba(79,93,117,0.45)" stroke-width="0.8"/>
+      <text x="272" y="88" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">STORE</text>
+      <text x="480" y="96" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Cilla Mini Phonon Weights</text>
+      <text x="480" y="116" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">models/cilla-mini/phonon/model/ · 107 MB · tokenizer · voices</text>
+
+      <!-- Node CW: packages/cilla-web (Focal treatment #1) -->
+      <rect x="64" y="232" width="440" height="84" rx="6" fill="#f5f5f5"/>
+      <rect x="64" y="232" width="440" height="84" rx="6" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1.2"/>
+      <rect x="72" y="240" width="68" height="12" rx="4" fill="transparent" stroke="rgba(235,108,54,0.50)" stroke-width="0.8"/>
+      <text x="108" y="248" fill="#eb6c36" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">WASM CORE</text>
+      <text x="284" y="264" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">cilla-web (@cilla-apps/cilla-web)</text>
+      <text x="284" y="284" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">phonon-tts WASM · persian.js normalizer · browser cache</text>
+      <text x="284" y="300" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">streaming sentence queue · barge-in stop() · AnalyserNode</text>
+
+      <!-- Node CP: packages/cilla-py (Backend treatment) -->
+      <rect x="552" y="232" width="344" height="84" rx="6" fill="#f5f5f5"/>
+      <rect x="552" y="232" width="344" height="84" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="560" y="240" width="52" height="12" rx="4" fill="transparent" stroke="rgba(45,49,66,0.35)" stroke-width="0.8"/>
+      <text x="588" y="248" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PYTHON</text>
+      <text x="724" y="264" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">cilla-py (Native &amp; Python)</text>
+      <text x="724" y="284" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">pocket-tts · native Phonon helpers</text>
+      <text x="724" y="300" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">sentence chunking · audio stitching</text>
+
+      <!-- Node A1: Offline Persian Voice Assistant (Focal treatment #2) -->
+      <rect x="64" y="416" width="264" height="76" rx="6" fill="#f5f5f5"/>
+      <rect x="64" y="416" width="264" height="76" rx="6" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1.2"/>
+      <rect x="72" y="424" width="44" height="12" rx="4" fill="transparent" stroke="rgba(235,108,54,0.50)" stroke-width="0.8"/>
+      <text x="96" y="432" fill="#eb6c36" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">READY</text>
+      <text x="196" y="452" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Offline Persian Voice Assistant</text>
+      <text x="196" y="468" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">apps/voice-assistant</text>
+      <text x="196" y="484" fill="#7a8399" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">Local ASR · Ollama / llama.cpp · Voice Orb</text>
+
+      <!-- Node A2: Future Web Apps (Optional/Planned treatment) -->
+      <rect x="352" y="416" width="240" height="76" rx="6" fill="#f5f5f5"/>
+      <rect x="352" y="416" width="240" height="76" rx="6" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.28)" stroke-width="1" stroke-dasharray="4,3"/>
+      <rect x="360" y="424" width="56" height="12" rx="4" fill="transparent" stroke="rgba(79,93,117,0.35)" stroke-width="0.8"/>
+      <text x="388" y="432" fill="#7a8399" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PLANNED</text>
+      <text x="472" y="452" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Future Web Apps</text>
+      <text x="472" y="468" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">SRT Video Dubber · Read-Aloud</text>
+      <text x="472" y="484" fill="#7a8399" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">Reels Studio</text>
+
+      <!-- Node A3: Future Desktop / CLI Apps (Optional/Planned treatment) -->
+      <rect x="616" y="416" width="280" height="76" rx="6" fill="#f5f5f5"/>
+      <rect x="616" y="416" width="280" height="76" rx="6" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.28)" stroke-width="1" stroke-dasharray="4,3"/>
+      <rect x="624" y="424" width="56" height="12" rx="4" fill="transparent" stroke="rgba(79,93,117,0.35)" stroke-width="0.8"/>
+      <text x="652" y="432" fill="#7a8399" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PLANNED</text>
+      <text x="756" y="452" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Future Desktop / CLI Apps</text>
+      <text x="756" y="468" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">Audiobook Studio</text>
+      <text x="756" y="484" fill="#7a8399" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">Morning Briefing</text>
+
+      <!-- ==================== LEGEND STRIP (bottom 60px) ==================== -->
+      <line x1="40" y1="540" x2="920" y2="540" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <text x="40" y="568" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">LEGEND</text>
+
+      <!-- Legend item 1: Focal -->
+      <rect x="116" y="560" width="16" height="12" rx="4" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1"/>
+      <text x="140" y="568" fill="#2d3142" font-size="8" font-family="'Geist Mono', monospace">FOCAL / LIVE PATH</text>
+
+      <!-- Legend item 2: Backend -->
+      <rect x="284" y="560" width="16" height="12" rx="4" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <text x="308" y="568" fill="#2d3142" font-size="8" font-family="'Geist Mono', monospace">LOCAL PACKAGE</text>
+
+      <!-- Legend item 3: Store -->
+      <rect x="436" y="560" width="16" height="12" rx="4" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+      <text x="460" y="568" fill="#2d3142" font-size="8" font-family="'Geist Mono', monospace">MODEL STORE</text>
+
+      <!-- Legend item 4: Planned -->
+      <rect x="572" y="560" width="16" height="12" rx="4" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.28)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="596" y="568" fill="#2d3142" font-size="8" font-family="'Geist Mono', monospace">PLANNED APP</text>
+    </svg>
+  </div>
+</body>
+</html>
